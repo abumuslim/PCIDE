@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Cloud10 - Login</title>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/login.css" />
+</head>
+
+<body>
+
+<div id="loginDiv" class="rounded-corners" style="width: 475px;">
+    <form>
+        <table id="mainform">
+            <tr>
+                <td colspan="3">
+                    <p style="text-decoration: underline; font-weight: bold; text-align: center;">Signup!</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Username
+                </td>
+                <td colspan="2">
+                    <input id="username" type="text"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Password
+                </td>
+                <td colspan="2">
+                    <input id="password" type="password"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Confirm Password
+                </td>
+                <td colspan="2">
+                    <input id="confirmpassword" type="password"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email
+                </td>
+                <td colspan="2">
+                    <input id="email" type="email"/>
+                </td>
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="3">
+                    <button type="submit"  style="float: right;">Signup</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

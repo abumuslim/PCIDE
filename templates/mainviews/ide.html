@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<!doctype html>
+<html>
+<head>
+    <title>Cloud10 - IDE</title>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.7.1.min.js"></script>
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/lib/codemirror.css">
+    <script src="{{ STATIC_URL }}editor/lib/codemirror.js"></script>
+    <script src="{{ STATIC_URL }}editor/lib/util/simple-hint.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/lib/util/simple-hint.css">
+    <script src="{{ STATIC_URL }}editor/lib/util/javascript-hint.js"></script>
+
+    <script src="{{ STATIC_URL }}editor/mode/python/python.js"></script>
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/doc/docs.css">
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/night.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/cobalt.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/eclipse.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/elegant.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/monokai.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/neat.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}editor/theme/rubyblue.css">
+
+    <style type="text/css">.CodeMirror {border: 1px solid #eee;}</style>
+
+
+    <script src="{{ STATIC_URL }}editor_factor.js"></script>
+    <script src="{{ STATIC_URL }}ide.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}projectTree/projectTree.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}treeImages/ide.css" />
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}colorbox/colorbox.css" />
+    <script type="text/javascript" src="{{ STATIC_URL }}colorbox/jquery.colorbox.js"></script>
+
+    <!-----------------------------Context Menu---------------------------------------------->
+    <script type="text/javascript"src="{{ STATIC_URL }}contextMenu/contextMenuPlugin.js"></script>
+    <script type="text/javascript"src="{{ STATIC_URL }}contextMenu/contextMenuActions.js"></script>
+    <!------------------------Super fish Menu------------------------------------------------>
+    <link rel="stylesheet" href="{{ STATIC_URL }}superfish-1.4.8/css/superfish.css">
+    <script type="text/javascript" src="{{ STATIC_URL }}superfish-1.4.8/js/hoverIntent.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}superfish-1.4.8/js/superfish.js"></script>
+    <script type="text/javascript">
+        //initialise plugins
+        jQuery(function(){
+            jQuery('ul.sf-menu').superfish();
+        });
+    </script>
+    <!------------------------------------------------------------------------------------------>
+
+    <!---TREE--------------------------------------------------------------------------------------->
+    <!--[if !IE]>-->
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/tree.css" media="screen">
+    <script type="text/javascript" src="{{ STATIC_URL }}tree.js"></script>
+    <!--<![endif]-->
+
+</head>
+<body>
+
+<div id="header" class="gradiant">
+    <div id="cloud10" class="">Cloud 10!</div>
+    <div id="slogan">Code Everywhere...</div>
+</div>
+
+<div id="toolbarDivID" class="gradiant">
+
+    <div id="optionsMenu">
+        Theme:<select id="selectThemeID" onchange="changeTheme()">
+            <option>default</option>
+            <option selected="">night</option>
+            <option>cobalt</option>
+            <option>eclipse</option>
+            <option>elegant</option>
+            <option>monokai</option>
+            <option>neat</option>
+            <option>rubyblue</option>
+        </select>
+    </div>
+</div>
+
+<!-- Super Fish Drop Down Menu-->
+<div id="superFishMenu" class="lightgradiant">
+    <ul class="sf-menu">
+        <li class="current">
+            <a href="#a">File</a>
+            <ul>
+                <li>
+                    <a href="#" id="openProjectButton" >Open Project</a>
+                    <ul>
+                        <li><a href="#" id="openProjectButton1" >Open Project 1</a></li>
+                        <li><a href="#" id="openProjectButton2" >Open Project 2</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" id="addFileButton" >Add File</a></li>
+                <li><a id="koko" href="#inline_rename_box" class="inline_rename">Rename</a></li>
+                <li><a href="#" id="deleteButton" onclick="deleteFile()">Delete File</a></li>
+                <li><a href="#" id="saveButton">Save File</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#b">Edit</a>
+            <ul>
+                <li><a href="#"  id="fitCodeArea" onclick="fitCodeArea()">Fit To Screen</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Run</a>
+            <ul>
+                <li><a href="#" id="runButton">Open Server</a></li>
+                <li><a href="http://www.google.com" id="open" class='iframe_run'>View Run</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="/home" class="main_menu_item rounded-corners">HOME PAGE</a>
+        </li>
+    </ul>
+
+</div>
+
+
+<div id="projectTreeDivID">
+    <div id="projectTreeButtons" class="gradiant">
+        Project Explorer
+        <div class="miniButton rounded-corners">p</div> <!--Pin-->
+        <div class="miniButton rounded-corners">x</div> <!--Close-->
+    </div>
+
+    <div id="projectTreeView">
+    </div>
+
+</div>
+<div id="codeAreaDivID">
+    <div id="taps">
+        <div id="tapsbody" class="lightgradiant">
+        </div>
+
+        <div id="tapsfooter" />
+    </div>
+
+    <div id="editors"> <!--here's where editors should be displayed-->
+    </div>
+</div>
+
+<!-- Inline Rename -->
+<div style='display:none'>
+    <div id='inline_rename_box' style='padding:10px; background:#fff;'>
+        <input id="newname" type="text" />
+        <button id="cancelRename" onclick="closeRenameForm()">Cancel</button>
+        <button id="confirmRename" onclick="renameFile()">Rename</button>
+    </div>
+</div>
+
+<!-- Context Menus -->
+<div class="contextMenu" id="projectTreeViewCM">
+    <ul>
+        <li id="copy">Copy</li>
+        <li id="pasteFile">Paste</li>
+        <li id="rename"><a href="#inline_rename_box" class="inline_rename">Rename</a></li>
+        <li id="cut">Cut</li>
+        <li id="delete">Delete</li>
+        <li id="filePath">File Path</li>
+        <li id="debug">Debug</li>
+    </ul>
+</div>
+
+<div class="contextMenu" id="codeAreaCM">
+    <ul>
+        <li id="selectAll">Select All</li>
+        <li id="pasteContent">Paste</li>
+        <li id="find">Find</li>
+        <li id="replace">Replace</li>
+    </ul>
+</div>
+
+
+</body>
+</html>

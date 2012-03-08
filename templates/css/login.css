@@ -1,0 +1,39 @@
+
+body
+{
+    background-image: url('../images/login-background.png');
+}
+
+div#loginDiv
+{
+    background-color: #1F4661;
+    color: #ffffff;
+
+    width: 420px;
+    /*height: 170px;*/
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 190px;
+
+    padding-top: 30px;
+    /*padding-left: 40px;*/
+
+    position: relative;
+}
+
+.rounded-corners
+{
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 7px;
+}
+
+table#mainform
+{
+    margin-top: -30px;
+    padding-bottom: 20px;
+    margin: auto;
+}

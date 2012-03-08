@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Shell</title>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}testprogram.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}compiler.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}shell.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/shell.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/style.css" />
+
+</head>
+
+<body>
+<!-- HEADER -->
+<div id="headerID" class="rounded-corners gradiant">
+    <div id="titleID" class="gradient"> Cloud 10 </div>
+    <div id="sloganID"> and so i code! </div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="mainMenuID" class="rounded-corners inner-shadow gradiant">
+    <div class="buttons">
+        <ul>
+            <li><a href="/home" class="main_menu_item rounded-corners">HOME</a></li>
+            <li><a href="/compiler" class="main_menu_item rounded-corners">COMPILER</a></li>
+            <li><a href="/testprogram" class="main_menu_item rounded-corners">TEST PROG.</a></li>
+            <li><a href="/shell" class="main_menu_item rounded-corners">SHELL</a></li>
+            <li><a href="/ide" class="main_menu_item rounded-corners">IDE</a></li>
+            <li><a href="/feedback" class="main_menu_item rounded-corners">FEEDBACK</a></li>
+            <li><a href="/about" class="main_menu_item rounded-corners">ABOUT</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- BODY -->
+<div id="bodyID" class="rounded-corners inner-shadow">
+    <div id="shellCodeID" class="rounded-corners">
+        <textarea id="shellCodeTextarea"  rows="20" cols="100" style="background-color: black; color: #ffffff;">>>> </textarea>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div id="footerID" class="gradiant rounded-corners" style="text-decoration: none;">
+    <p> copyrights @ <a style="color: black;" href="http://cloudide.wordpress.com/">Cloud Geeks</a> </p>
+</div>
+
+
+</body>
+
+</html>
