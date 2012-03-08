@@ -1,2 +1,0 @@
-/home/abumuslim/PycharmProjects/Test/templates/images
------/home/abumuslim/PycharmProjects/Test/templates/images/Play.png

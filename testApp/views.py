@@ -11,11 +11,70 @@ from testApp.backend import backend_saveFile
 from testApp.backend import backend_compileAndLoad
 from testApp.backend import backend_runRemoteServer
 from testApp.backend import backend_deleteFile
-
+from testApp.backend import backend_runProgram
+from testApp.backend import backend_initShell
+from testApp.backend import backend_executeShellCommand
+from testApp.backend import backend_finalizeShell
 
 def home(request):
-    return render_to_response('home.html', context_instance=RequestContext(request))
+    return render_to_response('mainviews/home.html', context_instance=RequestContext(request))
 
+def compiler(request):
+    return render_to_response('mainviews/compiler.html', context_instance=RequestContext(request))
+
+def runprogram(request):
+    code = request.REQUEST.get('code', None)
+    input = request.REQUEST.get('input', None)
+
+    #print code
+    compilationResults = backend_runProgram( code, input )
+
+    # Create response dictionary
+    response_dict = {}
+    response_dict['stdout'] = compilationResults['stdout']
+    response_dict['stderr'] = compilationResults['stderr']
+
+    return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')
+
+def testprogram(request):
+    return render_to_response('mainviews/testprogram.html', context_instance=RequestContext(request))
+
+
+def shell(request):
+    return render_to_response('mainviews/shell.html', context_instance=RequestContext(request))
+
+def initShell(request):
+    backend_initShell()
+    return HttpResponse(simplejson.dumps({}), mimetype='application/json')
+
+def finalizeShell(request):
+    backend_finalizeShell()
+    return HttpResponse(simplejson.dumps({}), mimetype='application/json')
+
+def executeShellCommand(request):
+    command = request.REQUEST.get('command', None)
+
+    executionResponse = backend_executeShellCommand( command )
+
+    # Create response dictionary
+    response_dict = {}
+    response_dict['executionResponse'] = executionResponse;
+    return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')
+
+def testtree(request):
+    return render_to_response('testtree.html', context_instance=RequestContext(request))
+
+def zoom(request):
+    return render_to_response('zoom.html', context_instance=RequestContext(request))
+
+def feedback(request):
+    return render_to_response('mainviews/feedback.html', context_instance=RequestContext(request))
+
+def login(request):
+    return render_to_response('mainviews/login.html', context_instance=RequestContext(request))
+
+def signup(request):
+    return render_to_response('mainviews/signup.html', context_instance=RequestContext(request))
 
 def compile(request):
     code = request.REQUEST.get('code', None)
@@ -32,10 +91,10 @@ def compile(request):
 
 
 def about(request):
-    return render_to_response('about.html', context_instance=RequestContext(request))
+    return render_to_response('mainviews/about.html', context_instance=RequestContext(request))
 
 def ide(request):
-    return render_to_response('ide.html', context_instance=RequestContext(request))
+    return render_to_response('mainviews/ide.html', context_instance=RequestContext(request))
 
 def loadTProjectree(request):
     projectPath = request.REQUEST.get('projectPath', None)

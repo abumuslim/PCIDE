@@ -1,5 +1,12 @@
-import os
+
 import getpass
+import subprocess
+import datetime
+import os
+import StringIO
+import sys
+
+
 
 def backend_compile (str):
     file = open("__code.py", "w")
@@ -71,48 +78,31 @@ def generateHTML(node, level):
 
 
     elif node.isFolder == False: # leaf/file
-        if(node.isFolder == True):
-            treeItemIcon = 'treeItemClosedFolder'
-        elif(node.extension == '.html'):
-            treeItemIcon = 'treeItemFileIcon_html'
+        if(node.extension == '.html'):
+            fileType = 'html'
         elif (node.extension == '.js'):
-            treeItemIcon = 'treeItemFileIcon_js'
+            fileType = 'js'
         elif (node.extension == '.css'):
-            treeItemIcon = 'treeItemFileIcon_css'
+            fileType = 'css'
         elif (node.extension == '.py'):
-            treeItemIcon = 'treeItemFileIcon_python'
+            fileType = 'py'
         else:
-            treeItemIcon = 'treeItemFileIcon'
+            fileType = 'doc'
 
-
-        code += "<li>\n"
-        code += "<div class=\"treeItemFile treeItem\">\n"
-        code += "<div class=\"treeItemNoButton\" />\n"
-        code += "<div class=\"" + treeItemIcon + "\" />\n"
-        code += "<div class=\"treeItemName\">" + node.name + "</div>\n"
-        code += "<div class=\"file_folder_id\">" + node.location + "</div>\n"
-        code += "</div>\n"
-        code += "</li>\n"
+        code += "<li class=\"file treeItemFile "+ fileType +"\" fileid=\""+node.location+"\"><span class=\"treefilename>\">"+ node.name +"</span></li>"
         return code
 
     else: # folder
-        treeItemIcon = "treeItemOpenedFolder"
-        treeItemButton = "treeItemButton"
+        code += "<li>"
+        code += "<label for=\""+node.name+"\" class=\"treeItemFolder\" >" + node.name + "</label>"
+        code += "<input type=\"checkbox\" checked id=\""+ node.name +"\"" + "/>"
 
-        code += "<li>\n"
-        code += "<div class=\"treeItemFolder treeItem\">\n"
-        code += "<div class=\"" + treeItemButton + " opened\" />\n"
-        code += "<div class=\""+ treeItemIcon + "\" />\n"
-        code += "<div class=\"treeItemName\">" + node.name + "</div>\n"
-        code += "<div class=\"file_folder_id\">" + node.location + "</div>\n"
-        code += "</div>\n"
-
-        # for sub list
-        code += "<br/><ul class=\"subtree\">\n"
+        #start of sublist
+        code += "<ol>\n"
         node.extractChildren()
         for sub in  node.children:
             code += generateHTML(sub, level+1)
-        code += "</ul>\n"
+        code += "</ol>\n"
         #end of sublist
 
         code += "</li>\n"
@@ -123,14 +113,45 @@ def backend_getProjectTree(projectPath, projectName):
     node = Node((projectName, projectPath))
 
     htmlCode = generateHTML(node, 0)
-    return htmlCode
+    return "<ol class=\"tree\">" + htmlCode + "</ol>"
+
+
+def backend_initShell():
+    default_stdout, mystdout
+    default_stdout = sys.stdout
+    sys.stdout = mystdout = StringIO.StringIO()
+
+def backend_executeShellCommand(command):
+    print "inside execute command"
+    #default_stdout, mystdout
+    default_stdout = sys.stdout
+    sys.stdout = mystdout = StringIO.StringIO()
+    exec(command, globals(), globals()) # x=1 \n x \n y = x + 1
+    sys.stdout = sys.__stdout__
+    return mystdout.getvalue()
+
+def backend_finalizeShell():
+    global default_stdout, default_stderr
+    sys.stdout = default_stdout
+
+def backend_runProgram(code, inputData):
+    currentTime = "{0}.py".format(datetime.datetime.now())
+    currentTime = currentTime.replace(' ', '')
+    codeFile = open(currentTime, "w")
+    codeFile.write(code)
+    codeFile.close()
+
+    process = subprocess.Popen(["python", currentTime], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    result = process.communicate(input=inputData)
+    os.remove(currentTime)
+    return {'stdout': result[0], 'stderr': result[1]}
+
 
 def retrieveFile(filePath): #Nora
     f = open("{0}".format(filePath), "r")
     fileData = f.read(-1)
     return fileData
 
-####################################################################################
 #rewrite the file in it's path
 def backend_saveFile(filePath, fileData):
     f = open("{0}".format(filePath), "w")
